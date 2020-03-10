@@ -2,7 +2,6 @@ package com.lee.phonebook;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
-import javax.swing.text.DefaultCaret;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -21,6 +20,7 @@ public class PhoneBook {
     Employee employee;
 
     int MODE = 0;
+    int AUTOINCREASE = 0;
 
     String temp = "";
 
@@ -93,11 +93,26 @@ public class PhoneBook {
 
     public void result_menu1() {
 
-
         for(String keys : empList.keySet()) {
 
             resultArea.append(empList.get(keys).toString() + "\n");
         }
+    }
+
+
+    // 중복처리 로직
+    public String chkName(String name) {
+
+        for(String keys : empList.keySet()) {
+
+            if (name.equals(keys)) {
+                AUTOINCREASE += 1;
+                name += AUTOINCREASE;
+            }
+        }
+
+        return name;
+
     }
 
 
@@ -114,6 +129,7 @@ public class PhoneBook {
         } else if (str.equals("2")) {
             resultArea.append("2번 전화번호 입력하기를 선택하셨습니다.\n");
             resultArea.append("이름을 입력해주세요.\n");
+            temp = chkName(inputTextField.getText());
             inputTextField.setText("");
         } else if (str.equals("3")) {
             resultArea.append("3번 전화번호 지우기를 선택하셨습니다.\n");
@@ -149,7 +165,14 @@ public class PhoneBook {
                 // TODO Auto-generated method stub
 //				System.out.println(e.getKeyCode());
 
+                /*
+                1~4 케이스별로 분거처리를 따로해야할거같음
+                 */
 
+                // 1번에 관한 로직
+
+
+               // 2번에 관한 로직
                 if (MODE == 0 && e.getKeyCode() == 10) {
                     MODE += 1;
                     chooseMode();
@@ -220,7 +243,7 @@ public class PhoneBook {
 
         try {
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(Properties.filePath, true));
-            bufferedWriter.write("\n" + temp);
+            bufferedWriter.write(temp + "\n");
             bufferedWriter.close();
         } catch (IOException e) {
             e.printStackTrace();
