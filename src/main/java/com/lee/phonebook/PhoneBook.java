@@ -66,7 +66,7 @@ public class PhoneBook {
     public void readFile() {
 
        try {
-           BufferedReader bufferedReader = new BufferedReader(new FileReader(Properties.macbookPath));
+           BufferedReader bufferedReader = new BufferedReader(new FileReader(Properties.macPath));
 
            empList = new HashMap<String, Employee>();
 
@@ -100,15 +100,12 @@ public class PhoneBook {
     }
 
 
-    // 중복처리 로직
-    public String chkName(String name) {
+    public void chkKey(String key) {
+        if (empList.containsKey(key)) {
 
-        for(String keys : empList.keySet()) {
-            if (empList.containsKey(name) ) {
-                name = name + index;
-            }
+        } else {
+
         }
-        return name;
     }
 
 
@@ -131,13 +128,6 @@ public class PhoneBook {
             @Override
             public void keyReleased(KeyEvent e) {
                 // TODO Auto-generated method stub
-//				System.out.println(e.getKeyCode());
-
-                /*
-                choose 모드 리턴 값에 따라 분기처리
-                1번 :
-                 */
-
 
                 // MENU 모드 입력받기
                 String str = inputTextField.getText();
@@ -158,11 +148,12 @@ public class PhoneBook {
                     }
                 }
 
+
                 if (MENUMODE.equals("1")) {
-                    // 1번 실행
                     inputTextField.setText("");
                     resultArea.append("1번 전화번호 전체보기를 선택하셨습니다.\n");
                     result_menu1();
+                    clear();
                 } else if (MENUMODE.equals("2")) {
                     System.out.println("현재 선택한 메뉴 모드 : " + MENUMODE);
 
@@ -197,6 +188,7 @@ public class PhoneBook {
                         MODE += 1;
                     } else if (MODE == 6 && e.getKeyCode() == 10) {
                         writeHashMap();
+                        clear();
                     }
                 } else if (MENUMODE.equals("3")) {
 
@@ -246,9 +238,7 @@ public class PhoneBook {
     public void writeHashMap() {
 
         employee = new Employee(temp.split(","));
-
         empList.put(employee.name, employee);
-
         writeFile();
 
     }
@@ -256,7 +246,7 @@ public class PhoneBook {
     public void writeFile() {
 
         try {
-            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(Properties.macbookPath, true));
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(Properties.macPath, true));
             bufferedWriter.write(temp + "\n");
             bufferedWriter.close();
         } catch (IOException e) {
@@ -266,7 +256,10 @@ public class PhoneBook {
 
     }
 
-    public void filtering() {
-
+    public void clear() {
+        MODE = 0;
+        MENUMODE = "";
+        inputTextField.setText("");
+        resultArea.append("원하는 메뉴를 선택하세요.\n");
     }
 }
