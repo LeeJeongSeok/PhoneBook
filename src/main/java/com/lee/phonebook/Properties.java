@@ -2,7 +2,8 @@ package com.lee.phonebook;
 
 public class Properties {
 
-    static String filePath = "/Users/jeongseok/Desktop/java_text_file/test.txt";
+    static String macPath = "/Users/jeongseok/Desktop/java_text_file/test.txt";
+    static String macbookPath = "/Users/JeongSeokLee/Desktop/javafileTest/phone.txt";
 
     static String menu_EX1 = "====== 미니 전화번호부 ======\n"
             + "1. 전화번호부 전체보기\n"
