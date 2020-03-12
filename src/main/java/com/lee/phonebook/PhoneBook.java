@@ -15,9 +15,12 @@ public class PhoneBook {
     JPanel jPanel;
     JTextArea menuArea, resultArea;
     JTextField inputTextField;
+    JScrollPane jScrollPane;
 
     HashMap<String, Employee> empList;
     Employee employee;
+
+    static int nameId = 0;
 
     int MODE = 0; // Enter 구분 MODE
     String MENUMODE = ""; // 1~4번 까지 선택할 수 있는 메뉴
@@ -43,6 +46,8 @@ public class PhoneBook {
         jPanel = new JPanel();
         jPanel.setLayout(new BorderLayout());
 
+
+
         menuArea = new JTextArea();
         menuArea.setText(Properties.menu_EX1);
         menuArea.setBorder(new TitledBorder("menuArea"));
@@ -51,12 +56,15 @@ public class PhoneBook {
         resultArea.setBorder(new TitledBorder("resultArea"));
         resultArea.append("원하는 메뉴를 누르고 Enter 입력\n");
 
+        jScrollPane = new JScrollPane(resultArea);
+
         inputTextField = new JTextField();
         inputTextField.addKeyListener(textInput());
 
 
+
         jPanel.add(menuArea, new BorderLayout().WEST);
-        jPanel.add(resultArea, new BorderLayout().CENTER);
+        jPanel.add(jScrollPane, new BorderLayout().CENTER);
         jPanel.add(inputTextField, new BorderLayout().SOUTH);
 
         jFrame.setContentPane(jPanel);
@@ -66,7 +74,7 @@ public class PhoneBook {
     public void readFile() {
 
        try {
-           BufferedReader bufferedReader = new BufferedReader(new FileReader(Properties.macPath));
+           BufferedReader bufferedReader = new BufferedReader(new FileReader(Properties.macbookPath));
 
            empList = new HashMap<String, Employee>();
 
@@ -100,13 +108,6 @@ public class PhoneBook {
     }
 
 
-    public void chkKey(String key) {
-        if (empList.containsKey(key)) {
-
-        } else {
-
-        }
-    }
 
 
     public KeyListener textInput() {
@@ -163,7 +164,11 @@ public class PhoneBook {
                         resultArea.append("이름을 입력해주세요.\n");
                         MODE += 1;
                     } else if (MODE == 2 && e.getKeyCode() == 10) {
-                        temp += inputTextField.getText() + ",";
+                        if (empList.containsKey(inputTextField.getText())) {
+                            temp = (temp + inputTextField.getText() + nameId++) + ",";
+                        } else {
+                            temp += inputTextField.getText() + ",";
+                        }
                         resultArea.append(inputTextField.getText() + "\n");
                         inputTextField.setText("");
                         resultArea.append("나이를 입력해주세요.\n");
@@ -188,7 +193,6 @@ public class PhoneBook {
                         MODE += 1;
                     } else if (MODE == 6 && e.getKeyCode() == 10) {
                         writeHashMap();
-                        clear();
                     }
                 } else if (MENUMODE.equals("3")) {
 
@@ -200,11 +204,18 @@ public class PhoneBook {
                         resultArea.append("이름을 입력해주세요.\n");
                         MODE += 1;
                     } else if (MODE == 2 && e.getKeyCode() == 10) {
-                        temp += inputTextField.getText() + ",";
-                        resultArea.append(inputTextField.getText() + "\n");
-                        inputTextField.setText("");
-                        resultArea.append("나이를 입력해주세요.\n");
-                        MODE += 1;
+                        if (empList.containsKey(inputTextField.getText())) {
+                            temp += inputTextField.getText() + ",";
+                            resultArea.append(inputTextField.getText() + "\n");
+                            inputTextField.setText("");
+                            resultArea.append("나이를 입력해주세요.\n");
+                            MODE += 1;
+                        } else {
+                            resultArea.append("해당 정보가 없습니다. 다시 입력해주세요. \n");
+                            MODE = 2;
+                            temp = "";
+                            inputTextField.setText("");
+                        }
                     } else if (MODE == 3 && e.getKeyCode() == 10) {
                         temp += inputTextField.getText() + ",";
                         resultArea.append(inputTextField.getText() + "\n");
@@ -226,9 +237,29 @@ public class PhoneBook {
                     }
                 } else if (MENUMODE.equals("4")) {
                     System.out.println("현재 선택한 메뉴 모드 : " + MENUMODE);
+                    if (MODE == 1 && e.getKeyCode() == 10) {
+                        inputTextField.setText("");
+                        resultArea.append("4번 전화번호 지우기를 선택하셨습니다.\n");
+                        resultArea.append("지울려는 이름을 입력해주세요.\n");
+                        MODE += 1;
+                    } else if (MODE == 2 && e.getKeyCode() == 10) {
+                        if (empList.containsKey(inputTextField.getText())) {
+                            empList.remove(inputTextField.getText());
+                            resultArea.append("해당 정보가 삭제되었습니다. 처음으로 돌아갑니다. \n");
+                            MODE = 0;
+                            MENUMODE = "";
+                            temp = inputTextField.getText();
+                            inputTextField.setText("");
+//                            deleteInfo();
+                        } else {
+                            resultArea.append("해당 정보가 없습니다. 다시 입력해주세요. \n");
+                            MODE = 1;
+                            temp = "";
+                            inputTextField.setText("");
+                        }
+                    }
                 }
             }
-
         };
 
         return keyListener;
@@ -246,19 +277,32 @@ public class PhoneBook {
     public void writeFile() {
 
         try {
-            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(Properties.macPath, true));
-            bufferedWriter.write(temp + "\n");
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(Properties.macbookPath, true));
+            bufferedWriter.write(temp + "\r\n");
+            clear();
             bufferedWriter.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
     }
+
+//    public void deleteInfo() {
+//
+//        try {
+//            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(Properties.macbookPath));
+//            bufferedWriter.write(temp + "\r\n");
+//            clear();
+//            bufferedWriter.close();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
+
 
     public void clear() {
         MODE = 0;
         MENUMODE = "";
+        temp = "";
         inputTextField.setText("");
         resultArea.append("원하는 메뉴를 선택하세요.\n");
     }
