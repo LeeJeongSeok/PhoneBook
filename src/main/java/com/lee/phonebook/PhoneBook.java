@@ -74,7 +74,7 @@ public class PhoneBook {
     public void readFile() {
 
        try {
-           BufferedReader bufferedReader = new BufferedReader(new FileReader(Properties.macbookPath));
+           BufferedReader bufferedReader = new BufferedReader(new FileReader(Properties.filePath));
 
            empList = new HashMap<String, Employee>();
 
@@ -234,6 +234,10 @@ public class PhoneBook {
                         inputTextField.setText("");
                         resultArea.append("수정하기 완료\n");
                         resultArea.append(temp);
+                        resultArea.append("한번더 엔터 누르면 입력완료 \n");
+                        MODE += 1;
+                    } else if (MODE == 6 && e.getKeyCode() == 10) {
+                        modifyInfo(temp);
                     }
                 } else if (MENUMODE.equals("4")) {
                     System.out.println("현재 선택한 메뉴 모드 : " + MENUMODE);
@@ -274,10 +278,17 @@ public class PhoneBook {
 
     }
 
+    public void modifyInfo(String data) {
+
+//        employee = data.split(",");
+        empList.put(employee.name, empList.get(employee.name));
+        writeFile();
+    }
+
     public void writeFile() {
 
         try {
-            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(Properties.macbookPath, true));
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(Properties.filePath, true));
             bufferedWriter.write(temp + "\r\n");
             clear();
             bufferedWriter.close();
