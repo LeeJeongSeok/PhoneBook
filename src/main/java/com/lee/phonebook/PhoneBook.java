@@ -74,11 +74,7 @@ public class PhoneBook {
     public void readFile() {
 
        try {
-<<<<<<< HEAD
            BufferedReader bufferedReader = new BufferedReader(new FileReader(Properties.filePath));
-=======
-           BufferedReader bufferedReader = new BufferedReader(new FileReader(Properties.macPath));
->>>>>>> 544c02f231ce1e528236d18b0103f317f42fabce
 
            empList = new HashMap<String, Employee>();
 
@@ -290,11 +286,8 @@ public class PhoneBook {
     public void writeFile() {
 
         try {
-<<<<<<< HEAD
+
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(Properties.filePath, true));
-=======
-            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(Properties.macPath, true));
->>>>>>> 544c02f231ce1e528236d18b0103f317f42fabce
             bufferedWriter.write(temp + "\r\n");
             clear();
             bufferedWriter.close();
