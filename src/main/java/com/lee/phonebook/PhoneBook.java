@@ -74,7 +74,7 @@ public class PhoneBook {
     public void readFile() {
 
        try {
-           BufferedReader bufferedReader = new BufferedReader(new FileReader(Properties.macbookPath));
+           BufferedReader bufferedReader = new BufferedReader(new FileReader(Properties.macPath));
 
            empList = new HashMap<String, Employee>();
 
@@ -86,9 +86,7 @@ public class PhoneBook {
                    break;
                }
                employee = new Employee(txt.split(","));
-
                empList.put(employee.name, employee);
-
            }
 
            bufferedReader.close();
@@ -102,7 +100,6 @@ public class PhoneBook {
     public void result_menu1() {
 
         for(String keys : empList.keySet()) {
-
             resultArea.append(empList.get(keys).toString() + "\n");
         }
     }
@@ -165,7 +162,7 @@ public class PhoneBook {
                         MODE += 1;
                     } else if (MODE == 2 && e.getKeyCode() == 10) {
                         if (empList.containsKey(inputTextField.getText())) {
-                            temp = (temp + inputTextField.getText() + nameId++) + ",";
+                            temp = (temp + inputTextField.getText() + nameId++) + ","; // 중복처리 로직이 들어가야
                         } else {
                             temp += inputTextField.getText() + ",";
                         }
@@ -205,6 +202,7 @@ public class PhoneBook {
                         MODE += 1;
                     } else if (MODE == 2 && e.getKeyCode() == 10) {
                         if (empList.containsKey(inputTextField.getText())) {
+                            overwriteInfo(inputTextField.getText());
                             temp += inputTextField.getText() + ",";
                             resultArea.append(inputTextField.getText() + "\n");
                             inputTextField.setText("");
@@ -277,7 +275,7 @@ public class PhoneBook {
     public void writeFile() {
 
         try {
-            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(Properties.macbookPath, true));
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(Properties.macPath, true));
             bufferedWriter.write(temp + "\r\n");
             clear();
             bufferedWriter.close();
@@ -286,17 +284,23 @@ public class PhoneBook {
         }
     }
 
-//    public void deleteInfo() {
-//
-//        try {
-//            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(Properties.macbookPath));
-//            bufferedWriter.write(temp + "\r\n");
-//            clear();
-//            bufferedWriter.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
+    public void overwriteInfo(String key) {
+
+        empList.remove(key);
+
+    }
+
+    public void deleteInfo() {
+
+        try {
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(Properties.macbookPath));
+            bufferedWriter.write(temp + "\r\n");
+            clear();
+            bufferedWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 
     public void clear() {
