@@ -18,6 +18,6 @@ public class Employee {
 
     @Override
     public String toString() {
-        return "[" + name + ", " + age + ", " + department + ", " + phone + "]";
+        return "[" + name + "," + age + "," + department + "," + phone + "]";
     }
 }

@@ -202,7 +202,6 @@ public class PhoneBook {
                         MODE += 1;
                     } else if (MODE == 2 && e.getKeyCode() == 10) {
                         if (empList.containsKey(inputTextField.getText())) {
-                            overwriteInfo(inputTextField.getText());
                             temp += inputTextField.getText() + ",";
                             resultArea.append(inputTextField.getText() + "\n");
                             inputTextField.setText("");
@@ -235,7 +234,8 @@ public class PhoneBook {
                         resultArea.append("한번더 엔터 누르면 입력완료 \n");
                         MODE += 1;
                     } else if (MODE == 6 && e.getKeyCode() == 10) {
-                        modifyInfo(temp);
+                        writeHashMap();
+
                     }
                 } else if (MENUMODE.equals("4")) {
                     System.out.println("현재 선택한 메뉴 모드 : " + MENUMODE);
@@ -246,13 +246,13 @@ public class PhoneBook {
                         MODE += 1;
                     } else if (MODE == 2 && e.getKeyCode() == 10) {
                         if (empList.containsKey(inputTextField.getText())) {
+                            deleteInfo(empList.get(inputTextField.getText()));
                             empList.remove(inputTextField.getText());
                             resultArea.append("해당 정보가 삭제되었습니다. 처음으로 돌아갑니다. \n");
                             MODE = 0;
                             MENUMODE = "";
                             temp = inputTextField.getText();
                             inputTextField.setText("");
-//                            deleteInfo();
                         } else {
                             resultArea.append("해당 정보가 없습니다. 다시 입력해주세요. \n");
                             MODE = 1;
@@ -268,6 +268,13 @@ public class PhoneBook {
     }
 
 
+//    public void modifyInfo(String data) {
+//
+//        employee = new Employee(data.split(","));
+//        empList.put(employee.name, empList.get(employee.name));
+//        writeFile();
+//    }
+
     public void writeHashMap() {
 
         employee = new Employee(temp.split(","));
@@ -276,17 +283,9 @@ public class PhoneBook {
 
     }
 
-    public void modifyInfo(String data) {
-
-//        employee = data.split(",");
-        empList.put(employee.name, empList.get(employee.name));
-        writeFile();
-    }
-
     public void writeFile() {
 
         try {
-
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(Properties.filePath, true));
             bufferedWriter.write(temp + "\r\n");
             clear();
@@ -296,19 +295,38 @@ public class PhoneBook {
         }
     }
 
-    public void overwriteInfo(String key) {
+    public void deleteInfo(Object key) {
 
-        empList.remove(key);
 
-    }
-
-    public void deleteInfo() {
+        System.out.println("values : " + key.toString());
 
         try {
-            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(Properties.macbookPath));
-            bufferedWriter.write(temp + "\r\n");
-            clear();
-            bufferedWriter.close();
+
+            File inputFile = new File(Properties.filePath);
+            File tempFile = new File(Properties.filePath);
+
+
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(inputFile));
+            PrintWriter printWrite = new PrintWriter(new FileWriter(tempFile));
+
+            String deleteString = key.toString();
+            String currentLine;
+
+            while ((currentLine = bufferedReader.readLine()) != null) {
+
+                System.out.println("currentLine  : " + currentLine);
+
+                printWrite.println(currentLine);
+
+                if (currentLine.equals(deleteString)) {
+                    printWrite.println("");
+                }
+            }
+
+            bufferedReader.close();
+            printWrite.close();
+
+            tempFile.renameTo(inputFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
