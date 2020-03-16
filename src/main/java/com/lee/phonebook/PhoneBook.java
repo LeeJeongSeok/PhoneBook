@@ -234,8 +234,7 @@ public class PhoneBook {
                         resultArea.append("한번더 엔터 누르면 입력완료 \n");
                         MODE += 1;
                     } else if (MODE == 6 && e.getKeyCode() == 10) {
-                        writeHashMap();
-
+                        modifyInfo(temp);
                     }
                 } else if (MENUMODE.equals("4")) {
                     System.out.println("현재 선택한 메뉴 모드 : " + MENUMODE);
@@ -290,6 +289,51 @@ public class PhoneBook {
             bufferedWriter.write(temp + "\r\n");
             clear();
             bufferedWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void modifyInfo(String info) {
+
+        System.out.println("modify전 : " + info);
+
+        String[] newData = info.split(",");
+
+        try {
+
+            File inputFile = new File("phone.txt");
+            File tempFile = new File(inputFile.getAbsolutePath() + ".txt");
+
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(inputFile));
+            PrintWriter printWriter = new PrintWriter(new FileWriter(tempFile));
+
+            String line = null;
+
+            while((line = bufferedReader.readLine()) != null) {
+
+                String[] oldData = line.split(",");
+
+                if (!newData[0].equals(oldData[0])) {
+                    printWriter.println(line);
+                } else {
+                    printWriter.append(info);
+                    printWriter.println("");
+                }
+            }
+
+            printWriter.close();
+            bufferedReader.close();
+
+            if (!inputFile.delete()) {
+
+            }
+
+            if (!tempFile.renameTo(inputFile)) {
+
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
