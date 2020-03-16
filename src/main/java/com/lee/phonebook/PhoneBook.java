@@ -297,36 +297,40 @@ public class PhoneBook {
 
     public void deleteInfo(Object key) {
 
-
-        System.out.println("values : " + key.toString());
+        System.out.println("delete values : " + key.toString());
 
         try {
 
-            File inputFile = new File(Properties.filePath);
-            File tempFile = new File(Properties.filePath);
-
+            File inputFile = new File("phone.txt");
+            File tempFile = new File(inputFile.getAbsolutePath() + ".txt");
 
             BufferedReader bufferedReader = new BufferedReader(new FileReader(inputFile));
-            PrintWriter printWrite = new PrintWriter(new FileWriter(tempFile));
+            PrintWriter printWriter = new PrintWriter(new FileWriter(tempFile));
 
-            String deleteString = key.toString();
-            String currentLine;
+            String line = null;
 
-            while ((currentLine = bufferedReader.readLine()) != null) {
+            while((line = bufferedReader.readLine()) != null) {
 
-                System.out.println("currentLine  : " + currentLine);
+                System.out.println("여기 들어옴?ㅋ");
 
-                printWrite.println(currentLine);
-
-                if (currentLine.equals(deleteString)) {
-                    printWrite.println("");
+                if (!line.equals(key.toString())) {
+                    printWriter.println(line);
+                    printWriter.flush();
                 }
             }
 
+            printWriter.close();
             bufferedReader.close();
-            printWrite.close();
 
-            tempFile.renameTo(inputFile);
+            if (!inputFile.delete()) {
+
+            }
+
+            if (!tempFile.renameTo(inputFile)) {
+
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
