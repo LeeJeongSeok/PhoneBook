@@ -74,6 +74,7 @@ public class PhoneBook {
     public void readFile() {
 
        try {
+
            BufferedReader bufferedReader = new BufferedReader(new FileReader(Properties.filePath));
 
            empList = new HashMap<String, Employee>();
