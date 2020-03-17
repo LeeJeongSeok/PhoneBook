@@ -266,12 +266,15 @@ public class PhoneBook {
                 } else if (MENUMODE.equals("2")) {
                     System.out.println("현재 선택한 메뉴 모드 : " + MENUMODE);
                     result_menu2(e.getKeyCode());
+                    clear();
                 } else if (MENUMODE.equals("3")) {
                     System.out.println("현재 선택한 메뉴 모드 : " + MENUMODE);
                     result_menu3(e.getKeyCode());
+                    clear();
                 } else if (MENUMODE.equals("4")) {
                     System.out.println("현재 선택한 메뉴 모드 : " + MENUMODE);
                     result_menu4(e.getKeyCode());
+                    clear();
                 }
             }
         };
