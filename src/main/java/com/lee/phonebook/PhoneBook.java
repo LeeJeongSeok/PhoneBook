@@ -100,8 +100,121 @@ public class PhoneBook {
 
     public void result_menu1() {
 
+        inputTextField.setText("");
+        resultArea.append("1번 전화번호 전체보기를 선택하셨습니다.\n");
+
         for(String keys : empList.keySet()) {
             resultArea.append(empList.get(keys).toString() + "\n");
+        }
+    }
+
+    public void result_menu2(int keyCode) {
+
+        if (MODE == 1 && keyCode == 10) {
+            inputTextField.setText("");
+            resultArea.append("2번 전화번호 입력하기를 선택하셨습니다.\n");
+            resultArea.append("이름을 입력해주세요.\n");
+            MODE += 1;
+        } else if (MODE == 2 && keyCode == 10) {
+            if (empList.containsKey(inputTextField.getText())) {
+                temp = (temp + inputTextField.getText() + nameId++) + ","; // 중복처리 로직이 들어가야
+            } else {
+                temp += inputTextField.getText() + ",";
+            }
+            resultArea.append(inputTextField.getText() + "\n");
+            inputTextField.setText("");
+            resultArea.append("나이를 입력해주세요.\n");
+            MODE += 1;
+        } else if (MODE == 3 && keyCode == 10) {
+            temp += inputTextField.getText() + ",";
+            resultArea.append(inputTextField.getText() + "\n");
+            inputTextField.setText("");
+            resultArea.append("부서를 입력해주세요.\n");
+            MODE += 1;
+        } else if (MODE == 4 && keyCode == 10) {
+            temp += inputTextField.getText() + ",";
+            resultArea.append(inputTextField.getText() + "\n");
+            inputTextField.setText("");
+            resultArea.append("번호를 입력해주세요.\n");
+            MODE += 1;
+        } else if (MODE == 5 && keyCode == 10) {
+            temp += inputTextField.getText();
+            resultArea.append(inputTextField.getText() + "\n");
+            inputTextField.setText("");
+            resultArea.append("한번더 엔터 누르면 입력완료 \n");
+            MODE += 1;
+        } else if (MODE == 6 && keyCode == 10) {
+            writeHashMap();
+        }
+    }
+
+    public void result_menu3(int keyCode) {
+
+        if (MODE == 1 && keyCode == 10) {
+            inputTextField.setText("");
+            resultArea.append("3번 전화번호 수정하기를 선택하셨습니다.\n");
+            resultArea.append("이름을 입력해주세요.\n");
+            MODE += 1;
+        } else if (MODE == 2 && keyCode == 10) {
+            if (empList.containsKey(inputTextField.getText())) {
+                temp += inputTextField.getText() + ",";
+                resultArea.append(inputTextField.getText() + "\n");
+                inputTextField.setText("");
+                resultArea.append("나이를 입력해주세요.\n");
+                MODE += 1;
+            } else {
+                resultArea.append("해당 정보가 없습니다. 다시 입력해주세요. \n");
+                MODE = 2;
+                temp = "";
+                inputTextField.setText("");
+            }
+        } else if (MODE == 3 && keyCode == 10) {
+            temp += inputTextField.getText() + ",";
+            resultArea.append(inputTextField.getText() + "\n");
+            inputTextField.setText("");
+            resultArea.append("부서를 입력해주세요.\n");
+            MODE += 1;
+        } else if (MODE == 4 && keyCode == 10) {
+            temp += inputTextField.getText() + ",";
+            resultArea.append(inputTextField.getText() + "\n");
+            inputTextField.setText("");
+            resultArea.append("번호를 입력해주세요.\n");
+            MODE += 1;
+        } else if (MODE == 5 && keyCode == 10) {
+            temp += inputTextField.getText();
+            resultArea.append(inputTextField.getText() + "\n");
+            inputTextField.setText("");
+            resultArea.append("수정하기 완료\n");
+            resultArea.append(temp);
+            resultArea.append("한번더 엔터 누르면 입력완료 \n");
+            MODE += 1;
+        } else if (MODE == 6 && keyCode == 10) {
+            modifyInfo(temp);
+        }
+    }
+
+    public void result_menu4(int keyCode) {
+
+        if (MODE == 1 && keyCode == 10) {
+            inputTextField.setText("");
+            resultArea.append("4번 전화번호 지우기를 선택하셨습니다.\n");
+            resultArea.append("지울려는 이름을 입력해주세요.\n");
+            MODE += 1;
+        } else if (MODE == 2 && keyCode == 10) {
+            if (empList.containsKey(inputTextField.getText())) {
+                deleteInfo(empList.get(inputTextField.getText()));
+                empList.remove(inputTextField.getText());
+                resultArea.append("해당 정보가 삭제되었습니다. 처음으로 돌아갑니다. \n");
+                MODE = 0;
+                MENUMODE = "";
+                temp = inputTextField.getText();
+                inputTextField.setText("");
+            } else {
+                resultArea.append("해당 정보가 없습니다. 다시 입력해주세요. \n");
+                MODE = 1;
+                temp = "";
+                inputTextField.setText("");
+            }
         }
     }
 
@@ -149,118 +262,20 @@ public class PhoneBook {
 
 
                 if (MENUMODE.equals("1")) {
-                    inputTextField.setText("");
-                    resultArea.append("1번 전화번호 전체보기를 선택하셨습니다.\n");
                     result_menu1();
                     clear();
                 } else if (MENUMODE.equals("2")) {
                     System.out.println("현재 선택한 메뉴 모드 : " + MENUMODE);
-
-                    if (MODE == 1 && e.getKeyCode() == 10) {
-                        inputTextField.setText("");
-                        resultArea.append("2번 전화번호 입력하기를 선택하셨습니다.\n");
-                        resultArea.append("이름을 입력해주세요.\n");
-                        MODE += 1;
-                    } else if (MODE == 2 && e.getKeyCode() == 10) {
-                        if (empList.containsKey(inputTextField.getText())) {
-                            temp = (temp + inputTextField.getText() + nameId++) + ","; // 중복처리 로직이 들어가야
-                        } else {
-                            temp += inputTextField.getText() + ",";
-                        }
-                        resultArea.append(inputTextField.getText() + "\n");
-                        inputTextField.setText("");
-                        resultArea.append("나이를 입력해주세요.\n");
-                        MODE += 1;
-                    } else if (MODE == 3 && e.getKeyCode() == 10) {
-                        temp += inputTextField.getText() + ",";
-                        resultArea.append(inputTextField.getText() + "\n");
-                        inputTextField.setText("");
-                        resultArea.append("부서를 입력해주세요.\n");
-                        MODE += 1;
-                    } else if (MODE == 4 && e.getKeyCode() == 10) {
-                        temp += inputTextField.getText() + ",";
-                        resultArea.append(inputTextField.getText() + "\n");
-                        inputTextField.setText("");
-                        resultArea.append("번호를 입력해주세요.\n");
-                        MODE += 1;
-                    } else if (MODE == 5 && e.getKeyCode() == 10) {
-                        temp += inputTextField.getText();
-                        resultArea.append(inputTextField.getText() + "\n");
-                        inputTextField.setText("");
-                        resultArea.append("한번더 엔터 누르면 입력완료 \n");
-                        MODE += 1;
-                    } else if (MODE == 6 && e.getKeyCode() == 10) {
-                        writeHashMap();
-                    }
+                    result_menu2(e.getKeyCode());
+                    clear();
                 } else if (MENUMODE.equals("3")) {
-
                     System.out.println("현재 선택한 메뉴 모드 : " + MENUMODE);
-
-                    if (MODE == 1 && e.getKeyCode() == 10) {
-                        inputTextField.setText("");
-                        resultArea.append("3번 전화번호 수정하기를 선택하셨습니다.\n");
-                        resultArea.append("이름을 입력해주세요.\n");
-                        MODE += 1;
-                    } else if (MODE == 2 && e.getKeyCode() == 10) {
-                        if (empList.containsKey(inputTextField.getText())) {
-                            temp += inputTextField.getText() + ",";
-                            resultArea.append(inputTextField.getText() + "\n");
-                            inputTextField.setText("");
-                            resultArea.append("나이를 입력해주세요.\n");
-                            MODE += 1;
-                        } else {
-                            resultArea.append("해당 정보가 없습니다. 다시 입력해주세요. \n");
-                            MODE = 2;
-                            temp = "";
-                            inputTextField.setText("");
-                        }
-                    } else if (MODE == 3 && e.getKeyCode() == 10) {
-                        temp += inputTextField.getText() + ",";
-                        resultArea.append(inputTextField.getText() + "\n");
-                        inputTextField.setText("");
-                        resultArea.append("부서를 입력해주세요.\n");
-                        MODE += 1;
-                    } else if (MODE == 4 && e.getKeyCode() == 10) {
-                        temp += inputTextField.getText() + ",";
-                        resultArea.append(inputTextField.getText() + "\n");
-                        inputTextField.setText("");
-                        resultArea.append("번호를 입력해주세요.\n");
-                        MODE += 1;
-                    } else if (MODE == 5 && e.getKeyCode() == 10) {
-                        temp += inputTextField.getText();
-                        resultArea.append(inputTextField.getText() + "\n");
-                        inputTextField.setText("");
-                        resultArea.append("수정하기 완료\n");
-                        resultArea.append(temp);
-                        resultArea.append("한번더 엔터 누르면 입력완료 \n");
-                        MODE += 1;
-                    } else if (MODE == 6 && e.getKeyCode() == 10) {
-                        writeHashMap();
-
-                    }
+                    result_menu3(e.getKeyCode());
+                    clear();
                 } else if (MENUMODE.equals("4")) {
                     System.out.println("현재 선택한 메뉴 모드 : " + MENUMODE);
-                    if (MODE == 1 && e.getKeyCode() == 10) {
-                        inputTextField.setText("");
-                        resultArea.append("4번 전화번호 지우기를 선택하셨습니다.\n");
-                        resultArea.append("지울려는 이름을 입력해주세요.\n");
-                        MODE += 1;
-                    } else if (MODE == 2 && e.getKeyCode() == 10) {
-                        if (empList.containsKey(inputTextField.getText())) {
-                            deleteInfo(empList.get(inputTextField.getText()));
-                            empList.remove(inputTextField.getText());
-                            resultArea.append("해당 정보가 삭제되었습니다. 처음으로 돌아갑니다. \n");
-                            MODE = 0;
-                            MENUMODE = "";
-                            temp = inputTextField.getText();
-                            inputTextField.setText("");
-                        } else {
-                            resultArea.append("해당 정보가 없습니다. 다시 입력해주세요. \n");
-                            MODE = 1;
-                            temp = "";
-                            inputTextField.setText("");
-                        }
-                    }
+                    result_menu4(e.getKeyCode());
+                    clear();
                 }
             }
         };
@@ -268,13 +283,6 @@ public class PhoneBook {
         return keyListener;
     }
 
-
-//    public void modifyInfo(String data) {
-//
-//        employee = new Employee(data.split(","));
-//        empList.put(employee.name, empList.get(employee.name));
-//        writeFile();
-//    }
 
     public void writeHashMap() {
 
@@ -296,38 +304,87 @@ public class PhoneBook {
         }
     }
 
-    public void deleteInfo(Object key) {
+    public void modifyInfo(String info) {
 
+        System.out.println("modify전 : " + info);
 
-        System.out.println("values : " + key.toString());
+        String[] newData = info.split(",");
 
         try {
 
-            File inputFile = new File(Properties.filePath);
-            File tempFile = new File(Properties.filePath);
-
+            File inputFile = new File("phone.txt");
+            File tempFile = new File(inputFile.getAbsolutePath() + ".txt");
 
             BufferedReader bufferedReader = new BufferedReader(new FileReader(inputFile));
-            PrintWriter printWrite = new PrintWriter(new FileWriter(tempFile));
+            PrintWriter printWriter = new PrintWriter(new FileWriter(tempFile));
 
-            String deleteString = key.toString();
-            String currentLine;
+            String line = null;
 
-            while ((currentLine = bufferedReader.readLine()) != null) {
+            while((line = bufferedReader.readLine()) != null) {
 
-                System.out.println("currentLine  : " + currentLine);
+                String[] oldData = line.split(",");
 
-                printWrite.println(currentLine);
-
-                if (currentLine.equals(deleteString)) {
-                    printWrite.println("");
+                if (!newData[0].equals(oldData[0])) {
+                    printWriter.println(line);
+                } else {
+                    printWriter.append(info);
+                    printWriter.println("");
                 }
             }
 
+            printWriter.close();
             bufferedReader.close();
-            printWrite.close();
 
-            tempFile.renameTo(inputFile);
+            if (!inputFile.delete()) {
+
+            }
+
+            if (!tempFile.renameTo(inputFile)) {
+
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteInfo(Object key) {
+
+        System.out.println("delete values : " + key.toString());
+
+        try {
+
+            File inputFile = new File("phone.txt");
+            File tempFile = new File(inputFile.getAbsolutePath() + ".txt");
+
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(inputFile));
+            PrintWriter printWriter = new PrintWriter(new FileWriter(tempFile));
+
+            String line = null;
+
+            while((line = bufferedReader.readLine()) != null) {
+
+                System.out.println("여기 들어옴?ㅋ");
+
+                if (!line.equals(key.toString())) {
+                    printWriter.println(line);
+                    printWriter.flush();
+                }
+            }
+
+            printWriter.close();
+            bufferedReader.close();
+
+            if (!inputFile.delete()) {
+
+            }
+
+            if (!tempFile.renameTo(inputFile)) {
+
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
