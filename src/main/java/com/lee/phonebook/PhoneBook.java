@@ -103,6 +103,8 @@ public class PhoneBook {
         for(String keys : empList.keySet()) {
             resultTextArea.append(empList.get(keys).toString() + "\n");
         }
+
+        clear();
     }
 
     public void resultForMenu2(int keyCode) {
@@ -142,6 +144,8 @@ public class PhoneBook {
             enterMode += 1;
         } else if (enterMode == 6 && keyCode == 10) {
             writeUserDataToHashMap();
+            writeUserDataToFile();
+            clear();
         }
     }
 
@@ -182,11 +186,13 @@ public class PhoneBook {
             resultTextArea.append(userInputTextField.getText() + "\n");
             userInputTextField.setText("");
             resultTextArea.append("수정하기 완료\n");
-            resultTextArea.append(userData);
+            resultTextArea.append(userData + "\n");
             resultTextArea.append("한번더 엔터 누르면 입력완료 \n");
             enterMode += 1;
         } else if (enterMode == 6 && keyCode == 10) {
-            modifyUserData(userData);
+            modifyUserDataToHashMap(userData);
+            modifyUserDataToFile(userData);
+            clear();
         }
     }
 
@@ -205,7 +211,7 @@ public class PhoneBook {
                 enterMode = 0;
                 menuMode = "";
                 userData = userInputTextField.getText();
-                userInputTextField.setText("");
+                clear();
             } else {
                 resultTextArea.append("해당 정보가 없습니다. 다시 입력해주세요. \n");
                 enterMode = 1;
@@ -281,22 +287,30 @@ public class PhoneBook {
 
         employee = new Employee(userData.split(","));
         empList.put(employee.name, employee);
-        writeUserDataToFile();
+
     }
+
 
     public void writeUserDataToFile() {
 
         try {
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(Properties.filePath, true));
             bufferedWriter.write(userData + "\r\n");
-            clear();
             bufferedWriter.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void modifyUserData(String info) {
+    public void modifyUserDataToHashMap(String info) {
+
+        employee = new Employee(info.split(","));
+        String name = employee.name;
+        empList.put(name, employee);
+
+    }
+
+    public void modifyUserDataToFile(String info) {
 
         System.out.println("수정 전 : " + info);
 
@@ -362,6 +376,14 @@ public class PhoneBook {
                 }
             }
 
+            if (!inputFile.delete()) {
+
+            }
+
+            if (!tempFile.renameTo(inputFile)) {
+
+            }
+
             printWriter.close();
             bufferedReader.close();
 
@@ -376,6 +398,6 @@ public class PhoneBook {
         menuMode = "";
         userData = "";
         userInputTextField.setText("");
-        resultTextArea.append("원하는 메뉴를 선택하세요.\n");
+        resultTextArea.append("원하는 메뉴를 입력하세요.\n");
     }
 }
