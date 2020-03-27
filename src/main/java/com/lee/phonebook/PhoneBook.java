@@ -400,4 +400,8 @@ public class PhoneBook {
         userInputTextField.setText("");
         resultTextArea.append("원하는 메뉴를 입력하세요.\n");
     }
+
+    public void finish() {
+
+    }
 }
