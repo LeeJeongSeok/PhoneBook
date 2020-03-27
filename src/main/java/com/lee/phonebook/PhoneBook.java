@@ -339,11 +339,11 @@ public class PhoneBook {
             }
 
             if (!inputFile.delete()) {
-
+                System.out.println("파일을 지울 수 없습니다.");
             }
 
             if (!tempFile.renameTo(inputFile)) {
-
+                System.out.println("동일한 파일이 존재합니다.");
             }
 
             printWriter.close();
@@ -377,11 +377,11 @@ public class PhoneBook {
             }
 
             if (!inputFile.delete()) {
-
+                System.out.println("파일을 지울 수 없습니다.");
             }
 
             if (!tempFile.renameTo(inputFile)) {
-
+                System.out.println("동일한 파일이 존재합니다.");
             }
 
             printWriter.close();
